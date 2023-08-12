@@ -172,7 +172,7 @@ export default {
         this.show = true;
       } catch (error) {
         this.error =
-          error.message + " in getting working times." || "Something went wrong!";
+          `${error.message} in getting working times.` || "Something went wrong!";
       }
       this.isLoading = false;
     },
