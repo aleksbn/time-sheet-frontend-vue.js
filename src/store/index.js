@@ -11,8 +11,8 @@ import generateModule from "./modules/generate/index.js";
 const store = createStore({
   getters: {
     getSiteLink() {
-      // return "https://timesheet-backend.azurewebsites.net/api/";
-      return "https://localhost:7059/api/";
+      return "https://timesheet-backend.azurewebsites.net/api/";
+      // return "https://localhost:7059/api/";
     },
   },
   modules: {
