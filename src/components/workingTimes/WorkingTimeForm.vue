@@ -109,7 +109,7 @@ export default {
   },
   computed: {
     fullName() {
-      return this.Employee.firstName + " " + this.Employee.lastName;
+      return `${this.Employee.firstName} ${this.Employee.lastName}`;
     },
   },
   mounted() {
