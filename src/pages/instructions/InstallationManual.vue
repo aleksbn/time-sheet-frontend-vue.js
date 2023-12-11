@@ -122,7 +122,7 @@
         When you&#39;re done with the installation, start it from either the <b>terminal in your frontend code editor</b>
         (I&#39;m using Visual Studio Code), or the <b>basic command prompt</b>. <i>Just make sure you&#39;re in the
           frontend project folder before starting it.</i> You can start it with typing in the following command: <b>npm
-          run serve</b>
+          run serve</b> 
       </p>
       <p>
         And that&#39;s it! Once you&#39;re done with all of this, open browser and type in <a

@@ -94,7 +94,7 @@
         </li>
       </ol>
       <p>Proceed to:
-        <router-link to="/installationmanual">
+        <router-link to="/installationmanual"> 
           <h3>Required software installation guide in more details</h3>
         </router-link>
         <router-link to="/usermanual">
