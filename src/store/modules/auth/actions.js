@@ -43,6 +43,7 @@ export default {
 
 	async login({ commit }, payload) {
 		try {
+			console.log(payload);
 			const data = await AjaxCall(
 				"Authentication/login-user",
 				"POST",
