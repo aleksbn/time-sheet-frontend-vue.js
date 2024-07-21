@@ -1,17 +1,37 @@
 <template>
   <base-card>
-    <base-dialog :show="!!error" title="An error occured" @close="handleError" :showClose="true">
+    <base-dialog
+      :show="!!error"
+      title="An error occured"
+      @close="handleError"
+      :showClose="true"
+    >
       <p>{{ error }}</p>
     </base-dialog>
     <form @submit.prevent="submit">
       <div class="form-control">
-        <label for="numberOfEmployees">Number of employees per department (up to 30)</label>
-        <input type="number" name="numberOfEmployees" id="numberOfEmployees" v-model="numberOfEmployees" min="1"
-          max="30" />
+        <label for="numberOfEmployees"
+          >Number of employees per department (up to 30)</label
+        >
+        <input
+          type="number"
+          name="numberOfEmployees"
+          id="numberOfEmployees"
+          v-model="numberOfEmployees"
+          min="1"
+          max="30"
+        />
       </div>
       <div class="form-control">
         <label for="numberOfDays">Number of working days (up to 90)</label>
-        <input type="number" name="numberOfDays" id="numberOfDays" v-model="numberOfDays" min="1" max="90" />
+        <input
+          type="number"
+          name="numberOfDays"
+          id="numberOfDays"
+          v-model="numberOfDays"
+          min="1"
+          max="90"
+        />
       </div>
       <base-button>Generate</base-button>
     </form>
@@ -21,6 +41,11 @@
 <script>
 export default {
   props: ["comid"],
+  /**
+   * A function that returns the initial data object for the component.
+   *
+   * @return {Object} The initial data object with error, numberOfEmployees, and numberOfDays properties.
+   */
   data() {
     return {
       error: null,
@@ -29,11 +54,16 @@ export default {
     };
   },
   methods: {
+    /**
+     * Submits the form data to generate random data for a given company, number of employees, and number of days.
+     *
+     * @return {Promise<void>} A promise that resolves when the random data is generated and the user is redirected to the employees page, or rejects with an error message.
+     */
     async submit() {
       const submitData = {
         comid: this.comid,
         numberOfEmployees: this.numberOfEmployees,
-        numberOfDays: this.numberOfDays
+        numberOfDays: this.numberOfDays,
       };
       try {
         await this.$store.dispatch("generate/generateData", submitData);
@@ -43,6 +73,11 @@ export default {
           `${error.message} in generating data.` || "Something went wrong!";
       }
     },
+    /**
+     * Resets the error property to null.
+     *
+     * @return {void} This function does not return anything.
+     */
     handleError() {
       this.error = null;
     },

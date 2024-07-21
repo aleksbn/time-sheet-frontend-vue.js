@@ -1,10 +1,18 @@
 <template>
   <div>
-    <base-dialog :show="!!error" title="An error occured" @close="handleError" :showClose="true">
+    <base-dialog
+      :show="!!error"
+      title="An error occured"
+      @close="handleError"
+      :showClose="true"
+    >
       <p>{{ error }}</p>
     </base-dialog>
     <section>
-      <employee-filter v-if="show" @change-filter="setFilters"></employee-filter>
+      <employee-filter
+        v-if="show"
+        @change-filter="setFilters"
+      ></employee-filter>
     </section>
     <section>
       <base-card>
@@ -13,7 +21,9 @@
         </div>
         <div class="controls">
           <base-button @click="refresh">Refresh</base-button>
-          <base-button link to="/addemployee" v-if="hasEmployees">Add employee</base-button>
+          <base-button link to="/addemployee" v-if="hasEmployees"
+            >Add employee</base-button
+          >
         </div>
         <table v-if="hasEmployees">
           <tr>
@@ -26,20 +36,35 @@
             <th>Hourly rate</th>
             <th></th>
           </tr>
-          <employee-item v-for="employee in filteredEmployees" :key="employee.ID" :ID="employee.ID"
-            :FirstName="employee.FirstName" :LastName="employee.LastName" :JobTitle="employee.JobTitle"
-            :Degree="employee.Degree" :Address="employee.Address" :Phone="employee.Phone"
-            :DateOfBirth="employee.DateOfBirth" :StartOfEmployment="employee.StartOfEmployment"
-            :HourlyRate="employee.HourlyRate" :DepartmentId="employee.DepartmentId"
-            :Department="employee.Department"></employee-item>
+          <employee-item
+            v-for="employee in filteredEmployees"
+            :key="employee.ID"
+            :ID="employee.ID"
+            :FirstName="employee.FirstName"
+            :LastName="employee.LastName"
+            :JobTitle="employee.JobTitle"
+            :Degree="employee.Degree"
+            :Address="employee.Address"
+            :Phone="employee.Phone"
+            :DateOfBirth="employee.DateOfBirth"
+            :StartOfEmployment="employee.StartOfEmployment"
+            :HourlyRate="employee.HourlyRate"
+            :DepartmentId="employee.DepartmentId"
+            :Department="employee.Department"
+          ></employee-item>
         </table>
         <h3 v-else-if="hasDepartments">
           There are no employees.
           <router-link to="/addemployee">Add one</router-link>, or
-          <router-link :to="generateLink">randomly generate both employees and their working
-            times!</router-link>
+          <router-link :to="generateLink"
+            >randomly generate both employees and their working
+            times!</router-link
+          >
         </h3>
-        <h3 v-else>You must <router-link to="/adddepartment">add department</router-link> before you add any employees.
+        <h3 v-else>
+          You must
+          <router-link to="/adddepartment">add department</router-link> before
+          you add any employees.
         </h3>
       </base-card>
     </section>
@@ -57,30 +82,80 @@ export default {
     ),
   },
   computed: {
+    /**
+     * Check if there are employees based on loading status and store getters.
+     *
+     * @return {Boolean} Whether there are employees or not.
+     */
     hasEmployees() {
       return !this.isLoading && this.$store.getters["employees/hasEmployees"];
     },
+    /**
+     * Checks if there are departments available and not in a loading state.
+     *
+     * @return {boolean} Returns true if there are departments and not in loading state, false otherwise.
+     */
     hasDepartments() {
-      return !this.isLoading && this.$store.getters["departments/hasDepartments"];
+      return (
+        !this.isLoading && this.$store.getters["departments/hasDepartments"]
+      );
     },
+    /**
+     * Generates a link based on the company id stored in localStorage.
+     *
+     * @return {string} The generated link.
+     */
     generateLink() {
       return `/generate/${localStorage.getItem("comid")}`;
     },
+    /**
+     * Filters the list of employees based on the active filters.
+     *
+     * @return {Array} The filtered list of employees.
+     */
     filteredEmployees() {
       let employees = this.$store.getters["employees/employees"];
-      employees = employees.filter(employee => employee.ID.includes(this.activeFilters.id));
-      employees = employees.filter(employee => employee.FirstName.toUpperCase().includes(this.activeFilters.firstName.toUpperCase()));
-      employees = employees.filter(employee => employee.LastName.toUpperCase().includes(this.activeFilters.lastName.toUpperCase()));
-      employees = employees.filter(employee => employee.Department.name.toUpperCase().includes(this.activeFilters.department.toUpperCase()));
-      employees = employees.filter(employee => +this.activeFilters.hourlyRate === 0 || +employee.HourlyRate === +this.activeFilters.hourlyRate);
+      employees = employees.filter((employee) =>
+        employee.ID.includes(this.activeFilters.id)
+      );
+      employees = employees.filter((employee) =>
+        employee.FirstName.toUpperCase().includes(
+          this.activeFilters.firstName.toUpperCase()
+        )
+      );
+      employees = employees.filter((employee) =>
+        employee.LastName.toUpperCase().includes(
+          this.activeFilters.lastName.toUpperCase()
+        )
+      );
+      employees = employees.filter((employee) =>
+        employee.Department.name
+          .toUpperCase()
+          .includes(this.activeFilters.department.toUpperCase())
+      );
+      employees = employees.filter(
+        (employee) =>
+          +this.activeFilters.hourlyRate === 0 ||
+          +employee.HourlyRate === +this.activeFilters.hourlyRate
+      );
       return employees;
     },
   },
   watch: {
+    /**
+     * Refreshes the active filters and triggers a refresh of the data.
+     *
+     * @return {void}
+     */
     activeFilters() {
       this.refresh();
-    }
+    },
   },
+  /**
+   * Initializes the data object with default values for isLoading, error, activeFilters, and show.
+   *
+   * @return {Object} The initialized data object.
+   */
   data() {
     return {
       isLoading: false,
@@ -98,6 +173,15 @@ export default {
     };
   },
   methods: {
+    /**
+     * Asynchronously loads employees from the server based on the current active filters.
+     *
+     * This function sets `isLoading` to `true`, dispatches a Vuex action to load employees from the server,
+     * and sets `show` to `true` if the operation is successful. If an error occurs, `error` is set to the
+     * error message.
+     *
+     * @return {Promise<void>} A promise that resolves when the employees have been loaded.
+     */
     async loadEmployees() {
       this.isLoading = true;
       try {
@@ -106,11 +190,17 @@ export default {
           localStorage.getItem("depid") === null
         ) {
           await this.$store.dispatch("employees/loadEmployees", {
-            link: `${localStorage.getItem("comid")}?PageNumber=${this.activeFilters.pageNumber}&PageSize=${this.activeFilters.pageSize}`
+            link: `${localStorage.getItem("comid")}?PageNumber=${
+              this.activeFilters.pageNumber
+            }&PageSize=${this.activeFilters.pageSize}`,
           });
         } else {
           await this.$store.dispatch("employees/loadEmployees", {
-            link: `${localStorage.getItem("comid")}/${localStorage.getItem("depid")}?PageNumber=${this.activeFilters.pageNumber}&PageSize=${this.activeFilters.pageSize}`
+            link: `${localStorage.getItem("comid")}/${localStorage.getItem(
+              "depid"
+            )}?PageNumber=${this.activeFilters.pageNumber}&PageSize=${
+              this.activeFilters.pageSize
+            }`,
           });
         }
         this.show = true;
@@ -120,12 +210,28 @@ export default {
       }
       this.isLoading = false;
     },
+    /**
+     * A function that handles errors by setting the error property to null.
+     *
+     * @return {void} No return value.
+     */
     handleError() {
       this.error = null;
     },
+    /**
+     * Asynchronously refreshes the list of employees by loading them from the server.
+     *
+     * @return {Promise<void>} A promise that resolves when the employees have been refreshed.
+     */
     async refresh() {
       await this.loadEmployees();
     },
+    /**
+     * A function that sets the filters based on the updated filters object.
+     *
+     * @param {Object} updatedFilters - The updated filters object.
+     * @return {void} No return value.
+     */
     setFilters(updatedFilters) {
       this.activeFilters = updatedFilters;
       this.activeFilters.hourlyRate === isNaN(updatedFilters.hourlyRate)
@@ -133,6 +239,11 @@ export default {
         : parseFloat(updatedFilters.hourlyRate);
     },
   },
+  /**
+   * Asynchronously executes the created lifecycle hook by loading employees, removing the "empid" item from local storage.
+   *
+   * @return {Promise<void>} A promise that resolves when the employees are successfully loaded and the "empid" item is removed from local storage.
+   */
   async created() {
     await this.loadEmployees();
     localStorage.removeItem("empid");

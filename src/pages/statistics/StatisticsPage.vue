@@ -3,7 +3,12 @@
     <section>
       <statistics-filter @filter-changed="changeData"></statistics-filter>
     </section>
-    <base-dialog :show="!!error" title="An error occured" @close="handleError" :showClose="true">
+    <base-dialog
+      :show="!!error"
+      title="An error occured"
+      @close="handleError"
+      :showClose="true"
+    >
       <p>{{ error }}</p>
     </base-dialog>
     <section>
@@ -34,8 +39,8 @@
           </tr>
         </table>
         <p v-else-if="!isLoading">
-          There are no statistics for this company, or for this period. You must add some data
-          first, or revisit filter section.
+          There are no statistics for this company, or for this period. You must
+          add some data first, or revisit filter section.
         </p>
       </base-card>
     </section>
@@ -46,6 +51,11 @@
 import StatisticsFilter from "../../components/statistics/StatisticsFilter.vue";
 
 export default {
+  /**
+   * Returns the initial data object for the component.
+   *
+   * @return {Object} The initial data object.
+   */
   data() {
     return {
       error: null,
@@ -60,6 +70,11 @@ export default {
     StatisticsFilter,
   },
   methods: {
+    /**
+     * Asynchronously loads statistics from the server based on the company ID, year, and month.
+     *
+     * @return {Promise<void>} A promise that resolves when the statistics are loaded successfully, or rejects with an error.
+     */
     async loadStatistics() {
       this.isLoading = true;
       try {
@@ -74,22 +89,48 @@ export default {
       }
       this.isLoading = false;
     },
+    /**
+     * Updates the filter data and loads statistics asynchronously.
+     *
+     * @param {Object} data - The new filter data.
+     * @return {Promise<void>} A promise that resolves when the statistics are loaded successfully.
+     */
     async changeData(data) {
       this.filterData = data;
       await this.loadStatistics();
     },
+    /**
+     * Resets the error property to null.
+     *
+     * @return {void} This function does not return anything.
+     */
     handleError() {
       this.error = null;
     },
   },
   computed: {
+    /**
+     * Retrieves the statistics from the Vuex store.
+     *
+     * @return {Array} The statistics array from the store.
+     */
     statistics() {
       return this.$store.getters["statistics/statistics"];
     },
+    /**
+     * Retrieves the value of the "statistics/hasStatistics" getter from the Vuex store.
+     *
+     * @return {boolean} The value of the "statistics/hasStatistics" getter.
+     */
     hasStatistics() {
       return this.$store.getters["statistics/hasStatistics"];
     },
   },
+  /**
+   * Asynchronously called when the component is created.
+   *
+   * @return {Promise<void>} A promise that resolves when statistics are loaded.
+   */
   async created() {
     await this.loadStatistics();
   },

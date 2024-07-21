@@ -9,15 +9,15 @@ import statisticsModule from "./modules/statistics/index.js";
 import generateModule from "./modules/generate/index.js";
 
 const store = createStore({
-	modules: {
-		companies: companiesModule,
-		departments: departmentsModule,
-		employees: employeesModule,
-		workingTimes: workingTimesModule,
-		auth: authModule,
-		statistics: statisticsModule,
-		generate: generateModule,
-	},
+  modules: {
+    companies: companiesModule,
+    departments: departmentsModule,
+    employees: employeesModule,
+    workingTimes: workingTimesModule,
+    auth: authModule,
+    statistics: statisticsModule,
+    generate: generateModule,
+  },
 });
 
 export default store;

@@ -8,19 +8,40 @@
         </div>
         <div class="form-control" :class="{ invalid: !depName.isValid }">
           <label for="Name">Name:</label>
-          <input type="text" name="Name" :disabled="!editMode" ref="depName" @blur="clearValidity('depName')" />
+          <input
+            type="text"
+            name="Name"
+            :disabled="!editMode"
+            ref="depName"
+            @blur="clearValidity('depName')"
+          />
         </div>
         <p v-if="!formIsValid">
           Please, fix the above errors and submit again.
         </p>
         <div>
           <base-button style="display: inline">{{ textForMode }}</base-button>
-          <base-button v-if="this.ID" link style="display: inline"
-            :to="`/employees/${this.comid}/${this.ID}`">Employees</base-button>
-          <base-button v-if="this.ID" @click="openWorkingTimes()" style="display: inline"
-            :to="`/workingtimes/${this.comid}/${this.ID}`">Working times</base-button>
-          <base-button v-if="this.ID" :type="'button'" @click="deleteDepartment()" style="display: inline">Delete this
-            department</base-button>
+          <base-button
+            v-if="this.ID"
+            link
+            style="display: inline"
+            :to="`/employees/${this.comid}/${this.ID}`"
+            >Employees</base-button
+          >
+          <base-button
+            v-if="this.ID"
+            @click="openWorkingTimes()"
+            style="display: inline"
+            :to="`/workingtimes/${this.comid}/${this.ID}`"
+            >Working times</base-button
+          >
+          <base-button
+            v-if="this.ID"
+            :type="'button'"
+            @click="deleteDepartment()"
+            style="display: inline"
+            >Delete this department</base-button
+          >
         </div>
       </form>
     </base-card>
@@ -31,6 +52,17 @@
 export default {
   props: ["ID", "Name", "Mode"],
   emits: ["save-data", "delete-department"],
+  /**
+   * Returns an object containing the initial data for the component.
+   *
+   * @return {Object} An object with the following properties:
+   *   - editModeType: {boolean} - Indicates if the component is in edit mode.
+   *   - formIsValid: {boolean} - Indicates if the form is valid.
+   *   - comid: {null} - The initial value for comid.
+   *   - depName: {Object} - An object with the following properties:
+   *       - isValid: {boolean} - Indicates if depName is valid.
+   *       - val: {string} - The initial value for depName.
+   */
   data() {
     return {
       editModeType: true,
@@ -43,9 +75,21 @@ export default {
     };
   },
   methods: {
+    /**
+     * Clears the validity of the specified input field.
+     *
+     * @param {string} input - The name of the input field to clear validity for.
+     * @return {void}
+     */
     clearValidity(input) {
       this[input].isValid = true;
     },
+    /**
+     * A function that validates the form by checking if the department name is empty.
+     *
+     * @param {void}
+     * @return {void}
+     */
     validateForm() {
       this.formIsValid = true;
       if (this.depName.val === "") {
@@ -53,6 +97,12 @@ export default {
         this.formIsValid = false;
       }
     },
+    /**
+     * Handles the form submission process by updating form values, validating the form,
+     * and emitting a save-data event with the form data.
+     *
+     * @return {void} No return value.
+     */
     submitForm() {
       if (!this.editModeType) {
         this.editModeType = true;
@@ -60,7 +110,6 @@ export default {
       }
 
       this.depName.val = this.$refs.depName.value.trim();
-
       this.validateForm();
 
       if (!this.formIsValid) {
@@ -69,7 +118,7 @@ export default {
 
       const formData = {
         depName: this.depName.val,
-        comId: this.comid
+        comId: this.comid,
       };
 
       if (this.Mode === "old") {
@@ -78,27 +127,59 @@ export default {
 
       this.$emit("save-data", formData);
     },
+    /**
+     * A function that opens the working times page by removing certain items from localStorage and pushing a new route to the router.
+     *
+     * @param {void} No parameters.
+     * @return {void} No return value.
+     */
     openWorkingTimes() {
       localStorage.removeItem("comidwt");
       localStorage.removeItem("empidwt");
       this.$router.push(`/workingtimes/${this.comid}/${this.ID}`);
     },
-
+    /**
+     * Emits a "delete-department" event with the ID of the department to be deleted.
+     *
+     * @return {void} No return value.
+     */
     deleteDepartment() {
       this.$emit("delete-department", this.ID);
     },
   },
   computed: {
+    /**
+     * Returns the value of the `editModeType` property.
+     *
+     * @return {boolean} The value of the `editModeType` property.
+     */
     editMode() {
       return this.editModeType;
     },
+    /**
+     * Returns the text for the mode based on the value of `editModeType`.
+     *
+     * @return {string} The text for the mode, either "Save" or "Edit".
+     */
     textForMode() {
       return this.editModeType === true ? "Save" : "Edit";
     },
   },
+  /**
+   * Initializes the component by setting the 'comid' property to the value retrieved from localStorage.
+   *
+   * @param {void} No parameters.
+   * @return {void} No return value.
+   */
   created() {
-    this.comid = localStorage.getItem('comid');
+    this.comid = localStorage.getItem("comid");
   },
+  /**
+   * Initializes the component and sets the value of `editModeType` based on the value of `Mode`.
+   * If `Mode` is "old", sets the value of the `depName` input field to the value of `Name`.
+   *
+   * @return {void}
+   */
   mounted() {
     this.editModeType = this.Mode === "new" ? true : false;
     if (this.Mode === "old") {

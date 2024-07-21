@@ -18,8 +18,17 @@
     </p>
     <div class="form-control">
       <label for="companyId">Select department:</label>
-      <select name="departmentId" v-model="depId" id="departmentId" v-if="loadedDepartments.length > 0">
-        <option v-for="department in departments" :key="department.ID" :value="department.ID">
+      <select
+        name="departmentId"
+        v-model="depId"
+        id="departmentId"
+        v-if="loadedDepartments.length > 0"
+      >
+        <option
+          v-for="department in departments"
+          :key="department.ID"
+          :value="department.ID"
+        >
           {{ department.Name }}
         </option>
       </select>
@@ -30,7 +39,9 @@
     </div>
   </div>
   <div class="form-control">
-    <base-button style="display: inline" @click="deleteDepartment">Delete</base-button>
+    <base-button style="display: inline" @click="deleteDepartment"
+      >Delete</base-button
+    >
     <base-button style="display: inline" @click="cancel">Cancel</base-button>
   </div>
 </template>
@@ -40,6 +51,11 @@ import { ref } from "vue";
 
 export default {
   emits: ["cancel"],
+  /**
+   * Initializes the data properties for the component.
+   *
+   * @return {Object} The initialized data properties.
+   */
   data() {
     return {
       delSelected: ref("1"),
@@ -48,14 +64,30 @@ export default {
     };
   },
   computed: {
+    /**
+     * Returns the value of the `delSelected` property.
+     *
+     * @return {any} The value of the `delSelected` property.
+     */
     delSel() {
       return this.delSelected;
     },
+    /**
+     * Returns the loaded departments.
+     *
+     * @return {Array} The loaded departments.
+     */
     departments() {
       return this.loadedDepartments;
     },
   },
   watch: {
+    /**
+     * Asynchronously handles the selection of a delete option.
+     * If the selected option is "0", it loads the departments.
+     *
+     * @return {Promise<void>} A promise that resolves when the departments are loaded.
+     */
     async delSelected() {
       if (this.delSelected == 0) {
         await this.loadDepartments();
@@ -63,6 +95,11 @@ export default {
     },
   },
   methods: {
+    /**
+     * Deletes a department.
+     *
+     * @return {Promise<void>} A Promise that resolves when the department is deleted.
+     */
     async deleteDepartment() {
       const deleteData = {
         depId: parseInt(localStorage.getItem("depid")),
@@ -77,9 +114,19 @@ export default {
           `${error.message} in deleting department.` || "Something went wrong!";
       }
     },
+    /**
+     * Emits a "cancel" event.
+     *
+     * @return {void}
+     */
     cancel() {
       this.$emit("cancel");
     },
+    /**
+     * Asynchronously loads the list of departments for a given company ID.
+     *
+     * @return {Promise<void>} A promise that resolves when the departments are loaded, or rejects with an error.
+     */
     async loadDepartments() {
       try {
         await this.$store.dispatch("departments/loadDepartments", {

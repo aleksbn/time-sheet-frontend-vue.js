@@ -44,6 +44,11 @@ export default {
   },
   emits: ["close"],
   methods: {
+    /**
+     * Attempts to close the dialog. If the dialog is not fixed, it emits a "close" event.
+     *
+     * @return {void}
+     */
     tryClose() {
       if (this.fixed) {
         return;

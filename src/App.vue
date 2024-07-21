@@ -13,29 +13,46 @@ export default {
   components: {
     TheHeader,
   },
+  /**
+   * Async function that handles the creation process.
+   *
+   */
   async created() {
     if (this.checkStorage()) {
       await this.$store.dispatch("auth/setUserData", {
         id: localStorage.getItem("userId"),
         token: localStorage.getItem("token"),
         refreshToken: localStorage.getItem("refreshToken"),
-        expiresAt: localStorage.getItem("expiresAt")
-      })
+        expiresAt: localStorage.getItem("expiresAt"),
+      });
     } else {
       this.clearStorageRemains();
     }
   },
   methods: {
+    /**
+     * Checks if the necessary items are present in the local storage.
+     *
+     * @return {boolean} Returns true if all the required items are present in the local storage, otherwise false.
+     */
     checkStorage() {
-      return !!localStorage.getItem("userId") && !!localStorage.getItem("token") && !!localStorage.getItem("refreshToken") && !!localStorage.getItem("expiresAt");
+      return (
+        !!localStorage.getItem("userId") &&
+        !!localStorage.getItem("token") &&
+        !!localStorage.getItem("refreshToken") &&
+        !!localStorage.getItem("expiresAt")
+      );
     },
+    /**
+     * A function that clears specific items from local storage.
+     */
     clearStorageRemains() {
-      localStorage.removeItem('userId');
-      localStorage.removeItem('token');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('expiresAt');
-    }
-  }
+      localStorage.removeItem("userId");
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("expiresAt");
+    },
+  },
 };
 </script>
 

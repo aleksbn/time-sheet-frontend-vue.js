@@ -1,6 +1,10 @@
 <template #default>
   <form @submit.prevent="submitData">
-    <div class="form-control" v-if="hasEmployees" :class="{ invalid: !employeeId.isValid }">
+    <div
+      class="form-control"
+      v-if="hasEmployees"
+      :class="{ invalid: !employeeId.isValid }"
+    >
       <label for="employeeId">Employee</label>
       <select name="employeeId" id="employeeId" v-model="employeeId.val">
         <option value="0" style="font-style: italic" disabled>
@@ -19,27 +23,49 @@
     </div>
     <div class="form-control" :class="{ invalid: !wtDate.isValid }">
       <label for="wtDate">Date</label>
-      <input type="text" name="wtDate" @blur="clearValidity('wtDate')" v-model="wtDate.val" />
+      <input
+        type="text"
+        name="wtDate"
+        @blur="clearValidity('wtDate')"
+        v-model="wtDate.val"
+      />
     </div>
     <div class="form-control" :class="{ invalid: !wtStartTime.isValid }">
       <label for="StartTime">Start time</label>
-      <input type="time" name="wtStartTime" @blur="clearValidity('wtStartTime')" v-model="wtStartTime.val" />
+      <input
+        type="time"
+        name="wtStartTime"
+        @blur="clearValidity('wtStartTime')"
+        v-model="wtStartTime.val"
+      />
     </div>
     <div class="form-control" :class="{ invalid: !wtEndTime.isValid }">
       <label for="EndTime">End time</label>
-      <input type="time" name="wtEndTime" @blur="clearValidity('wtEndTime')" v-model="wtEndTime.val" />
+      <input
+        type="time"
+        name="wtEndTime"
+        @blur="clearValidity('wtEndTime')"
+        v-model="wtEndTime.val"
+      />
     </div>
     <p v-if="!formIsValid">Please, fix the above errors and submit again.</p>
     <base-button style="display: inline">Save</base-button>
-    <base-button style="display: inline" :type="'button'" @click="cancel">Cancel</base-button>
+    <base-button style="display: inline" :type="'button'" @click="cancel"
+      >Cancel</base-button
+    >
   </form>
 </template>
 
 <script>
 import moment from "moment";
-import { toRaw } from 'vue';
+import { toRaw } from "vue";
 export default {
   emits: ["close", "cancel", "catchError"],
+  /**
+   * Initializes the data properties for the component.
+   *
+   * @return {Object} The initial data object with form validation flags and values.
+   */
   data() {
     return {
       formIsValid: true,
@@ -62,12 +88,29 @@ export default {
     };
   },
   methods: {
+    /**
+     * A function to clear the validity of an input field.
+     *
+     * @param {string} input - The key of the input field to clear validity for.
+     * @return {void}
+     */
     clearValidity(input) {
       this[input].isValid = true;
     },
+    /**
+     * Emits a "cancel" event.
+     *
+     * @return {void}
+     */
     cancel() {
       this.$emit("cancel");
     },
+    /**
+     * Submits the form data to the server to add a new working time entry.
+     *
+     * @return {Promise<void>} A promise that resolves when the working time entry is successfully added.
+     * @throws {Error} If the form data is invalid or there is an error adding the working time entry.
+     */
     async submitData() {
       try {
         this.validateForm();
@@ -85,12 +128,16 @@ export default {
 
         await this.$store.dispatch("workingTimes/addWorkingTime", formData);
         this.$emit("close");
-      }
-      catch (error) {
+      } catch (error) {
         this.$emit("cancel");
         this.$emit("catchError", error);
       }
     },
+    /**
+     * A function to validate the form data for adding a new working time entry.
+     *
+     * @return {void}
+     */
     validateForm() {
       this.formIsValid = true;
       if (this.employeeId.val === "0") {
@@ -115,21 +162,43 @@ export default {
     },
   },
   computed: {
+    /**
+     * A function that returns the employees from the Vuex store.
+     *
+     * @return {Array} The list of employees.
+     */
     employees() {
       return this.$store.getters["employees/employees"];
     },
+    /**
+     * Check if there are any employees in the Vuex store.
+     *
+     * @return {boolean} True if there are employees, false otherwise.
+     */
     hasEmployees() {
       return this.$store.getters["employees/hasEmployees"];
     },
+    /**
+     * A function that returns the selected employee ID.
+     *
+     * @return {type} description of return value
+     */
     selectedEmpId() {
       return this.selectedEmployeeId;
-    }
+    },
   },
+  /**
+   * A function to handle the asynchronous initialization logic when the component is created.
+   *
+   * @return {void}
+   */
   async created() {
     await this.$store.dispatch("employees/loadEmployees", {
-      link: `${localStorage.getItem("comid")}?PageNumber=0&PageSize=10000`
+      link: `${localStorage.getItem("comid")}?PageNumber=0&PageSize=10000`,
     });
-    this.wtDate.val = moment(new Date().toLocaleDateString().substring(0, 10)).format("DD.MM.YYYY");
+    this.wtDate.val = moment(
+      new Date().toLocaleDateString().substring(0, 10)
+    ).format("DD.MM.YYYY");
     const comId = localStorage.getItem("comid");
     if (comId) {
       await this.$store.dispatch("companies/loadCompany", { id: comId });

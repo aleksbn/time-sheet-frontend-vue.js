@@ -8,96 +8,182 @@
         </div>
         <div class="form-control" :class="{ invalid: !empFirstName.isValid }">
           <label for="Firstame">First name:</label>
-          <input type="text" name="FirstName" :disabled="!editMode" ref="empFirstName"
-            @blur="clearValidity('empFirstName')" />
+          <input
+            type="text"
+            name="FirstName"
+            :disabled="!editMode"
+            ref="empFirstName"
+            @blur="clearValidity('empFirstName')"
+          />
         </div>
         <p class="invalid" v-if="!empFirstName.isValid">
-          First name cannot be empty, must contain only letters, but it is allowed to use dashes (like in Marc-Anthony),
-          or single quotes (like in O'Neal).
+          First name cannot be empty, must contain only letters, but it is
+          allowed to use dashes (like in Marc-Anthony), or single quotes (like
+          in O'Neal).
         </p>
         <div class="form-control" :class="{ invalid: !empLastName.isValid }">
           <label for="LastName">Last name:</label>
-          <input type="text" name="LastName" :disabled="!editMode" ref="empLastName"
-            @blur="clearValidity('empLastName')" />
+          <input
+            type="text"
+            name="LastName"
+            :disabled="!editMode"
+            ref="empLastName"
+            @blur="clearValidity('empLastName')"
+          />
         </div>
         <p class="invalid" v-if="!empLastName.isValid">
-          Last name cannot be empty, must contain only letters, but it is allowed to use dashes (like in Schwartz-Muller),
-          or single quotes (like in O'Brian).
+          Last name cannot be empty, must contain only letters, but it is
+          allowed to use dashes (like in Schwartz-Muller), or single quotes
+          (like in O'Brian).
         </p>
         <div class="form-control" :class="{ invalid: !empJobTitle.isValid }">
           <label for="JobTitle">Job title:</label>
-          <input type="text" name="JobTitle" :disabled="!editMode" ref="empJobTitle"
-            @blur="clearValidity('empJobTitle')" />
+          <input
+            type="text"
+            name="JobTitle"
+            :disabled="!editMode"
+            ref="empJobTitle"
+            @blur="clearValidity('empJobTitle')"
+          />
         </div>
         <p class="invalid" v-if="!empJobTitle.isValid">
-          Job title cannot be empty, must contain only letters, but it is allowed to use dashes or single quotes.
+          Job title cannot be empty, must contain only letters, but it is
+          allowed to use dashes or single quotes.
         </p>
         <div class="form-control" :class="{ invalid: !empDegree.isValid }">
           <label for="Degree">Degree:</label>
-          <input type="text" name="Degree" :disabled="!editMode" ref="empDegree" @blur="clearValidity('empDegree')" />
+          <input
+            type="text"
+            name="Degree"
+            :disabled="!editMode"
+            ref="empDegree"
+            @blur="clearValidity('empDegree')"
+          />
         </div>
         <p class="invalid" v-if="!empDegree.isValid">
-          Degree cannot be empty, must contain only letters, but it is allowed to use dashes or single quotes.
+          Degree cannot be empty, must contain only letters, but it is allowed
+          to use dashes or single quotes.
         </p>
-        <div class="form-control" :class="{ invalid: !empDepartmentId.isValid }">
+        <div
+          class="form-control"
+          :class="{ invalid: !empDepartmentId.isValid }"
+        >
           <label for="DepartmentId">Department:</label>
-          <select name="DepartmentId" id="DepartmentId" :disabled="!editMode" ref="empDepartmentId"
-            @blur="clearValidity('empDepartmentId')">
-            <option v-for="dep in departments" :key="dep.ID" :value="dep.ID" :selected="depId === dep.ID ? true : false">
+          <select
+            name="DepartmentId"
+            id="DepartmentId"
+            :disabled="!editMode"
+            ref="empDepartmentId"
+            @blur="clearValidity('empDepartmentId')"
+          >
+            <option
+              v-for="dep in departments"
+              :key="dep.ID"
+              :value="dep.ID"
+              :selected="depId === dep.ID ? true : false"
+            >
               {{ dep.Name }}
             </option>
           </select>
         </div>
         <div class="form-control" :class="{ invalid: !empEmail.isValid }">
           <label for="Email">Email:</label>
-          <input type="text" name="Email" :disabled="!editMode" ref="empEmail" @blur="clearValidity('empEmail')" />
+          <input
+            type="text"
+            name="Email"
+            :disabled="!editMode"
+            ref="empEmail"
+            @blur="clearValidity('empEmail')"
+          />
         </div>
         <div class="form-control" :class="{ invalid: !empAddress.isValid }">
           <label for="Address">Address:</label>
-          <input type="text" name="Address" :disabled="!editMode" ref="empAddress" @blur="clearValidity('empAddress')" />
+          <input
+            type="text"
+            name="Address"
+            :disabled="!editMode"
+            ref="empAddress"
+            @blur="clearValidity('empAddress')"
+          />
         </div>
         <p class="invalid" v-if="this.Mode === 'new' && !empEmail.isValid">
-          Email and its corresponding confirmation field must match and be valid email addresses.
+          Email and its corresponding confirmation field must match and be valid
+          email addresses.
         </p>
         <p class="invalid" v-if="this.Mode === 'old' && !empEmail.isValid">
           Both old and new emails must be valid email addresses.
         </p>
         <div class="form-control" :class="{ invalid: !empPhone.isValid }">
           <label for="Phone">Phone:</label>
-          <input type="text" name="Phone" :disabled="!editMode" ref="empPhone" @blur="clearValidity('empPhone')" />
+          <input
+            type="text"
+            name="Phone"
+            :disabled="!editMode"
+            ref="empPhone"
+            @blur="clearValidity('empPhone')"
+          />
         </div>
         <p class="invalid" v-if="!empPhone.isValid">
           Phone number must be in +999999999 or 099999999 format.
         </p>
         <div class="form-control" :class="{ invalid: !empDateOfBirth.isValid }">
           <label for="DateOfBirth">Date of birth:</label>
-          <input type="text" name="DateOfBirth" :disabled="!editMode" ref="empDateOfBirth"
-            @blur="clearValidity('empDateOfBirth')" />
+          <input
+            type="text"
+            name="DateOfBirth"
+            :disabled="!editMode"
+            ref="empDateOfBirth"
+            @blur="clearValidity('empDateOfBirth')"
+          />
         </div>
         <p v-if="!empDateOfBirth.isValid">
           The only available format is DD.MM.YYY! You must use that one!
         </p>
-        <div class="form-control" :class="{ invalid: !empStartOfEmployment.isValid }">
+        <div
+          class="form-control"
+          :class="{ invalid: !empStartOfEmployment.isValid }"
+        >
           <label for="StartOfEmployment">Start of employment:</label>
-          <input type="text" name="StartOfEmployment" :disabled="!editMode" ref="empStartOfEmployment"
-            @blur="clearValidity('empStartOfEmployment')" />
+          <input
+            type="text"
+            name="StartOfEmployment"
+            :disabled="!editMode"
+            ref="empStartOfEmployment"
+            @blur="clearValidity('empStartOfEmployment')"
+          />
         </div>
         <p v-if="!empStartOfEmployment.isValid">
           The only available format is DD.MM.YYY! You must use that one!
         </p>
         <div class="form-control" :class="{ invalid: !empHourlyRate.isValid }">
           <label for="HourlyRate">Hourly rate ($):</label>
-          <input type="number" step="0.01" name="HourlyRate" :disabled="!editMode" ref="empHourlyRate"
-            @blur="clearValidity('empHourlyRate')" />
+          <input
+            type="number"
+            step="0.01"
+            name="HourlyRate"
+            :disabled="!editMode"
+            ref="empHourlyRate"
+            @blur="clearValidity('empHourlyRate')"
+          />
         </div>
         <p v-if="!formIsValid">
           Please, fix the above errors and submit again.
         </p>
         <div>
           <base-button style="display: inline">{{ textForMode }}</base-button>
-          <base-button v-if="this.ID" @click="openWorkingTimes()" style="display: inline"
-            :to="`/workingtimes/${this.ID}`">Working times</base-button>
-          <base-button :type="'button'" @click="deleteEmployee" style="display: inline">Delete this employee</base-button>
+          <base-button
+            v-if="this.ID"
+            @click="openWorkingTimes()"
+            style="display: inline"
+            :to="`/workingtimes/${this.ID}`"
+            >Working times</base-button
+          >
+          <base-button
+            :type="'button'"
+            @click="deleteEmployee"
+            style="display: inline"
+            >Delete this employee</base-button
+          >
         </div>
       </form>
     </base-card>
@@ -125,6 +211,47 @@ export default {
     "StartOfEmployment",
     "Mode",
   ],
+  /**
+   * Returns an object containing the initial data for the component.
+   *
+   * @return {Object} An object with the following properties:
+   *   - editModeType: A boolean indicating the type of edit mode.
+   *   - formIsValid: A boolean indicating if the form is valid.
+   *   - depid: A null value for the department ID.
+   *   - empFirstName: An object with the following properties:
+   *     - isValid: A boolean indicating if the first name is valid.
+   *     - val: An empty string for the first name value.
+   *   - empLastName: An object with the following properties:
+   *     - isValid: A boolean indicating if the last name is valid.
+   *     - val: An empty string for the last name value.
+   *   - empDegree: An object with the following properties:
+   *     - isValid: A boolean indicating if the degree is valid.
+   *     - val: An empty string for the degree value.
+   *   - empJobTitle: An object with the following properties:
+   *     - isValid: A boolean indicating if the job title is valid.
+   *     - val: An empty string for the job title value.
+   *   - empHourlyRate: An object with the following properties:
+   *     - isValid: A boolean indicating if the hourly rate is valid.
+   *     - val: A number with a value of 0 for the hourly rate.
+   *   - empDepartmentId: An object with the following properties:
+   *     - isValid: A boolean indicating if the department ID is valid.
+   *     - val: An empty string for the department ID value.
+   *   - empEmail: An object with the following properties:
+   *     - isValid: A boolean indicating if the email is valid.
+   *     - val: An empty string for the email value.
+   *   - empAddress: An object with the following properties:
+   *     - isValid: A boolean indicating if the address is valid.
+   *     - val: An empty string for the address value.
+   *   - empPhone: An object with the following properties:
+   *     - isValid: A boolean indicating if the phone number is valid.
+   *     - val: An empty string for the phone number value.
+   *   - empDateOfBirth: An object with the following properties:
+   *     - isValid: A boolean indicating if the date of birth is valid.
+   *     - val: An empty string for the date of birth value.
+   *   - empStartOfEmployment: An object with the following properties:
+   *     - isValid: A boolean indicating if the start of employment is valid.
+   *     - val: An empty string for the start of employment value.
+   */
   data() {
     return {
       editModeType: true,
@@ -177,12 +304,28 @@ export default {
     };
   },
   methods: {
+    /**
+     * Resets the error property to null.
+     *
+     * @return {void}
+     */
     handleError() {
       this.error = null;
     },
+    /**
+     * Updates the validity of a specific input field to true.
+     *
+     * @param {string} input - The name of the input field to update validity for.
+     * @return {void}
+     */
     clearValidity(input) {
       this[input].isValid = true;
     },
+    /**
+     * Submits the form data after validating and preparing the necessary fields.
+     *
+     * @return {void}
+     */
     submitForm() {
       if (!this.editModeType) {
         this.editModeType = true;
@@ -226,6 +369,11 @@ export default {
 
       this.$emit("save-data", formData);
     },
+    /**
+     * Validates the form fields for employee data entry.
+     *
+     * @return {void}
+     */
     validateForm() {
       this.formIsValid = true;
       if (!DataCheckers.checkPersonName(this.empFirstName.val)) {
@@ -278,6 +426,11 @@ export default {
         this.formIsValid = false;
       }
     },
+    /**
+     * Asynchronously loads the list of departments for a given company ID.
+     *
+     * @return {Promise<void>} A promise that resolves when the departments are loaded, or rejects with an error.
+     */
     async loadDepartments() {
       try {
         await this.$store.dispatch("departments/loadDepartments", {
@@ -288,35 +441,75 @@ export default {
           `${error.message} in getting departments` || "Something went wrong!";
       }
     },
+    /**
+     * Opens the working times page for the employee.
+     *
+     * @return {void}
+     */
     openWorkingTimes() {
       localStorage.removeItem("comidwt");
       localStorage.removeItem("depidwt");
       this.$router.push("/workingtimes/" + this.empid);
     },
+    /**
+     * Emits a 'delete-employee' event with the current employee ID.
+     *
+     * @return {void}
+     */
     deleteEmployee() {
       this.$emit("delete-employee", this.ID);
     },
   },
   computed: {
+    /**
+     * Returns the value of the `editModeType` property.
+     *
+     * @return {boolean} The value of the `editModeType` property.
+     */
     editMode() {
       return this.editModeType;
     },
+    /**
+     * Returns the text for the mode based on the value of `editModeType`.
+     *
+     * @return {string} The text for the mode, either "Save" or "Edit".
+     */
     textForMode() {
       return this.editModeType === true ? "Save" : "Edit";
     },
+    /**
+     * Retrieves the list of departments from the Vuex store.
+     *
+     * @return {Array} An array of department objects.
+     */
     departments() {
       return this.$store.getters["departments/departments"];
     },
+    /**
+     * A function that returns the value of the DepartmentId property.
+     *
+     * @return {type} description of return value
+     */
     depId() {
       return this.DepartmentId;
     },
   },
+  /**
+   * Initializes the component by loading departments and setting company, employee, and department IDs.
+   *
+   * @return {void}
+   */
   async created() {
     await this.loadDepartments();
     this.comid = localStorage.getItem("comid");
     this.empid = localStorage.getItem("empid");
     this.depid = localStorage.getItem("depid");
   },
+  /**
+   * Initializes the component by setting up the edit mode type and populating form fields if in edit mode.
+   *
+   * @return {void}
+   */
   mounted() {
     this.editModeType = this.Mode === "new" ? true : false;
     if (this.Mode === "old") {

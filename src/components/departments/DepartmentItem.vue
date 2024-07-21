@@ -12,6 +12,11 @@
 export default {
   props: ["ID", "Name"],
   computed: {
+    /**
+     * Returns the details link for the department based on the current route path and the department ID.
+     *
+     * @return {string} The details link for the department.
+     */
     detailsLink() {
       return `${this.$route.path}/${this.ID}`;
     },
@@ -28,7 +33,7 @@ li {
 }
 
 span {
-  font-size: .7em;
+  font-size: 0.7em;
 }
 
 h2 {

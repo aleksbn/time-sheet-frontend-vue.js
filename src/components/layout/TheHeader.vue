@@ -8,7 +8,9 @@
         <div class="menu-button"></div>
       </label>
       <ul class="menu">
-        <li v-if="isLoggedIn"><router-link to="/companies">All Companies</router-link></li>
+        <li v-if="isLoggedIn">
+          <router-link to="/companies">All Companies</router-link>
+        </li>
         <li v-if="hasComId && isLoggedIn">
           <router-link :to="depIdLink">All Departments</router-link>
         </li>
@@ -31,42 +33,90 @@
 
 <script>
 export default {
+  /**
+   * Initializes the component and adds a click event listener to each list item in the menu.
+   * When a list item is clicked, it sets the checked property of the menu toggle checkbox to false.
+   *
+   * @return {void}
+   */
   mounted() {
-    const menuToggleCheckbox = document.getElementById('menu-toggle');
+    const menuToggleCheckbox = document.getElementById("menu-toggle");
 
-    const menuItems = document.querySelectorAll('.menu li');
+    const menuItems = document.querySelectorAll(".menu li");
     menuItems.forEach((menuItem) => {
-      menuItem.addEventListener('click', () => {
+      menuItem.addEventListener("click", () => {
         menuToggleCheckbox.checked = false;
       });
     });
   },
+  /**
+   * Returns an object containing the initial data for the component.
+   *
+   * @return {Object} An object with the following properties:
+   *   - comid: {null} - The initial value for comid.
+   */
   data() {
     return {
       comid: null,
     };
   },
   computed: {
+    /**
+     * Returns the authentication status of the user.
+     *
+     * @return {boolean} The authentication status of the user.
+     */
     isLoggedIn() {
       return this.$store.getters["auth/isAuthenticated"];
     },
+    /**
+     * A method that checks if comid exists.
+     *
+     * @return {type} description of return value
+     */
     hasComId() {
       return this.comid;
     },
+    /**
+     * Returns the value of the `depid` property.
+     *
+     * @return {type} The value of the `depid` property.
+     */
     hasDepId() {
       return this.depid;
     },
+    /**
+     * Returns the URL for the departments page with the company ID appended.
+     *
+     * @return {string} The URL for the departments page with the company ID appended.
+     */
     depIdLink() {
       return `/departments/${this.comid}`;
     },
+    /**
+     * A method that returns the value of the empid property.
+     *
+     * @return {type} description of return value
+     */
     hasEmpId() {
       return this.empid;
     },
+    /**
+     * Returns the URL for the employees page with the company ID appended.
+     *
+     * @return {string} The URL for the employees page with the company ID appended.
+     */
     empIdLink() {
       return `/employees/${this.comid}`;
     },
   },
   methods: {
+    /**
+     * Checks the local storage for the "comid" key and updates the "comid" data property accordingly.
+     * This function is called every 200 milliseconds using the setInterval method.
+     *
+     * @return {void} This function does not return anything.
+     */
     checkLocalStorage() {
       setInterval(() => {
         this.comid = localStorage.getItem("comid")
@@ -74,11 +124,22 @@ export default {
           : null;
       }, 200);
     },
+    /**
+     * Asynchronously logs the user out by dispatching the "auth/logout" action
+     * and replacing the current route with "/auth".
+     *
+     * @return {Promise<void>} A promise that resolves after the user is logged out.
+     */
     async logout() {
       await this.$store.dispatch("auth/logout");
       this.$router.replace("/auth");
     },
   },
+  /**
+   * Initializes the component when it is created by calling the checkLocalStorage method.
+   *
+   * @return {void} This function does not return anything.
+   */
   created() {
     this.checkLocalStorage();
   },
@@ -180,7 +241,7 @@ body {
   padding: 0;
 }
 
-.menu>li {
+.menu > li {
   margin: 0 1rem;
   overflow: hidden;
 }
@@ -221,16 +282,16 @@ body {
   margin-top: 8px;
 }
 
-#menu-toggle:checked+.menu-button-container .menu-button::before {
+#menu-toggle:checked + .menu-button-container .menu-button::before {
   margin-top: 0px;
   transform: rotate(405deg);
 }
 
-#menu-toggle:checked+.menu-button-container .menu-button {
+#menu-toggle:checked + .menu-button-container .menu-button {
   background: rgba(255, 255, 255, 0);
 }
 
-#menu-toggle:checked+.menu-button-container .menu-button::after {
+#menu-toggle:checked + .menu-button-container .menu-button::after {
   margin-top: 0px;
   transform: rotate(-405deg);
 }
@@ -251,7 +312,7 @@ body {
     align-items: center;
   }
 
-  #menu-toggle~.menu li {
+  #menu-toggle ~ .menu li {
     height: 0;
     margin: 0;
     padding: 0;
@@ -259,7 +320,7 @@ body {
     transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  #menu-toggle:checked~.menu li {
+  #menu-toggle:checked ~ .menu li {
     border: 1px solid #333;
     vertical-align: middle;
     height: 3em;
@@ -267,7 +328,7 @@ body {
     transition: height 400ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  .menu>li {
+  .menu > li {
     display: flex;
     justify-content: center;
     margin: 0;
@@ -277,7 +338,8 @@ body {
     background-color: #222;
   }
 
-  .menu>li:not(:last-child) {
+  .menu > li:not(:last-child) {
     border-bottom: 1px solid #444;
   }
-}</style>
+}
+</style>

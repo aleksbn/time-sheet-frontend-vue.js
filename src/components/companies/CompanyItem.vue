@@ -14,14 +14,33 @@
 
 <script>
 export default {
-  props: ["ID", "Name", "Address", "City", "Country", "Email", "StartTime", "EndTime"],
+  props: [
+    "ID",
+    "Name",
+    "Address",
+    "City",
+    "Country",
+    "Email",
+    "StartTime",
+    "EndTime",
+  ],
   computed: {
+    /**
+     * Returns a string representing the full address of the company.
+     *
+     * @return {string} The full address of the company, formatted as "Address, City, Country".
+     */
     fullAddress() {
       return `${this.Address}, ${this.City}, ${this.Country}`;
     },
+    /**
+     * Returns the details link for the company based on the current route path and the company ID.
+     *
+     * @return {string} The details link for the company.
+     */
     detailsLink() {
       return `${this.$route.path}/${this.ID}`;
-    }
+    },
   },
 };
 </script>

@@ -1,6 +1,11 @@
 <template>
   <div>
-    <base-dialog :show="!!error" title="An error occured" :showClose="true" @close="handleError">
+    <base-dialog
+      :show="!!error"
+      title="An error occured"
+      :showClose="true"
+      @close="handleError"
+    >
       <p>{{ error }}</p>
     </base-dialog>
     <div v-if="isLoading">
@@ -14,7 +19,12 @@
         </div>
         <div class="form-control">
           <label for="username">Password</label>
-          <input type="password" id="password" name="password" v-model="password.val" />
+          <input
+            type="password"
+            id="password"
+            name="password"
+            v-model="password.val"
+          />
         </div>
         <base-button>Login</base-button>
       </form>
@@ -24,6 +34,22 @@
 
 <script>
 export default {
+  /**
+   * Returns an object containing the initial data for the component.
+   *
+   * @return {Object} - An object with the following properties:
+   *   - error: null,
+   *   - isLoading: false,
+   *   - formIsValid: true,
+   *   - email: {
+   *       isValid: true,
+   *       val: "",
+   *     },
+   *   - password: {
+   *       isValid: true,
+   *       val: "",
+   *     },
+   */
   data() {
     return {
       error: null,
@@ -40,9 +66,21 @@ export default {
     };
   },
   methods: {
+    /**
+     * Resets the error state to null.
+     *
+     * @return {void}
+     */
     handleError() {
       this.error = null;
     },
+    /**
+     * A method that submits the form data after validation,
+     * logs in the user by dispatching an action to the store,
+     * and redirects the user to the companies page on successful login.
+     *
+     * @return {Promise} - A promise indicating the success or failure of the submission.
+     */
     async submitData() {
       this.validateForm();
 
@@ -59,10 +97,16 @@ export default {
         });
         this.$router.push("/companies");
       } catch (error) {
-        this.error = `${error.message} in logging in.` || "Something went wrong!";
+        this.error =
+          `${error.message} in logging in.` || "Something went wrong!";
       }
       this.isLoading = false;
     },
+    /**
+     * Validates the form by checking if email and password are empty.
+     *
+     * @return {void} - Does not return anything.
+     */
     validateForm() {
       this.formIsValid = true;
       if (this.email === "") {
